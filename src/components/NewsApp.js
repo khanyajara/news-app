@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import React from 'react';
+import { useState, useEffect } from 'react';
+import Css from './NewsApp.css'; 
 
 function NewsArticle({ article }) {
     return (
-        <div>
+        <div className="news-article">
             <h3>{article.title}</h3>
             <p>{article.description}</p>
             <a href={article.url} target="_blank" rel="noopener noreferrer">Read more</a>
@@ -18,7 +20,6 @@ function TeslaNewsApp() {
     }, []);
 
     const fetchTeslaNews = async () => {
-        // Construct the URL with the Tesla news endpoint and your API key
         const url = `https://newsapi.org/v2/everything?q=tesla&from=2024-06-30&sortBy=publishedAt&apiKey=594e7c65a0394c01b9b99a1399d9d896`;
         
         try {
