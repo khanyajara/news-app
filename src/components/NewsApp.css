@@ -6,6 +6,7 @@ body {
     background-color: #f0f0f0;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 #root {
@@ -57,4 +58,18 @@ h2 {
 
 .news-article a:hover {
     text-decoration: underline;
+}
+
+/* Row and Column styling */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    box-sizing: border-box;
 }

@@ -12,18 +12,22 @@ function NewsArticle({ article }) {
     );
 }
 
-function TeslaNewsApp() {
+function NewsApp() {
     const [teslaNews, setTeslaNews] = useState([]);
+    const [appleNews, setAppleNews] = useState([]);
+    const [techCrunchNews, setTechCrunchNews] = useState([]);
 
     useEffect(() => {
-        fetchTeslaNews();
+        fetchNews();
     }, []);
 
-    const fetchTeslaNews = async () => {
-        const url = `https://newsapi.org/v2/everything?q=tesla&from=2024-06-30&sortBy=publishedAt&apiKey=594e7c65a0394c01b9b99a1399d9d896`;
-        
+    const fetchNews = async () => {
+        const urls = [`https://newsapi.org/v2/everything?q=tesla&from=2024-07-01&sortBy=publishedAt&apiKey=594e7c65a0394c01b9b99a1399d9d896 `,
+                      `https://newsapi.org/v2/everything?q=apple&from=2024-07-31&to=2024-07-31&sortBy=popularity&apiKey=594e7c65a0394c01b9b99a1399d9d896`,
+                      `https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=594e7c65a0394c01b9b99a1399d9d896`
+                      ] 
         try {
-            const response = await fetch(url);
+            const response = await fetch(urls);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -31,17 +35,32 @@ function TeslaNewsApp() {
             setTeslaNews(data.articles);
         } catch (error) {
             console.error('Error fetching Tesla news:', error);
-        }
+        }   
+            
     };
 
     return (
-        <div>
-            <h2>Tesla News</h2>
-            {teslaNews.map((article, index) => (
-                <NewsArticle key={index} article={article} />
-            ))}
+        <div className='row'>
+            <div className='column'>
+                <h2>Tesla News</h2>
+                {teslaNews.map((article, index) => (
+                    <NewsArticle key={index} article={article} />
+                ))}
+            </div>
+            <div className='column'>
+                <h2>Apple News</h2>
+                {appleNews.map((article, index) => (
+                    <NewsArticle key={index} article={article} />
+                ))}
+            </div>
+            <div className='column'>
+                <h2>Tech Crunch News</h2>
+                {techCrunchNews.map((article, index) => (
+                    <NewsArticle key={index} article={article} />
+                ))}
+            </div>
         </div>
     );
 }
 
-export default TeslaNewsApp;
+export default NewsApp;
