@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './styles.css';
+import './NewsApp.css';
 
 const NewsArticle = ({ article }) => {
     return (
@@ -15,51 +15,58 @@ const NewsArticle = ({ article }) => {
 };
 
 const NewsApp = () => {
-    const [teslaNews, setTeslaNews] = useState([]);
-    const [appleNews, setAppleNews] = useState([]);
-    const [techCrunchNews, setTechCrunchNews] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('general'); // Default to general
+    const [news, setNews] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [articlesPerPage] = useState(9); // 3 columns x 3 rows per page
+    const [selectedCategory, setSelectedCategory] = useState('general');
 
     useEffect(() => {
         const fetchNews = async () => {
-            const urls = [
-                `https://newsapi.org/v2/everything?q=tesla&from=2024-07-01&sortBy=publishedAt&apiKey=594e7c65a0394c01b9b99a1399d9d896`,
-                `https://newsapi.org/v2/everything?q=apple&from=2024-07-31&to=2024-07-31&sortBy=popularity&apiKey=594e7c65a0394c01b9b99a1399d9d896`,
-                `https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=594e7c65a0394c01b9b99a1399d9d896`
-            ];
-
+            const url = `https://newsapi.org/v2/top-headlines?country=us&category=${selectedCategory}&apiKey=594e7c65a0394c01b9b99a1399d9d896`;
             try {
-                const [teslaResponse, appleResponse, techCrunchResponse] = await Promise.all(urls.map(url => fetch(url).then(res => res.json())));
-                setTeslaNews(teslaResponse.articles);
-                setAppleNews(appleResponse.articles);
-                setTechCrunchNews(techCrunchResponse.articles);
+                const response = await fetch(url);
+                const data = await response.json();
+                setNews(data.articles || []);
             } catch (error) {
                 console.error('Error fetching news:', error);
             }
         };
 
         fetchNews();
-    }, []);
+    }, [selectedCategory]);
+
+    const indexOfLastArticle = currentPage * articlesPerPage;
+    const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+
+    const handleNextPage = () => {
+        setCurrentPage(prevPage => prevPage + 1);
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage(prevPage => (prevPage > 1 ? prevPage - 1 : 1));
+    };
 
     return (
-        <div className='row'>
-            <div className='column'>
-                <h2>Tesla News</h2>
-                {teslaNews.map((article, index) => (
+        <div>
+            <div className="dropdown">
+                <button className="dropbtn">Category</button>
+                <div className="dropdown-content">
+                    <a href="#" onClick={() => setSelectedCategory('sports')}>Sports</a>
+                    <a href="#" onClick={() => setSelectedCategory('technology')}>Tech</a>
+                    <a href="#" onClick={() => setSelectedCategory('business')}>Business</a>
+                    <a href="#" onClick={() => setSelectedCategory('market')}>Market</a>
+                    <a href="#" onClick={() => setSelectedCategory('traffic')}>Traffic</a>
+                    <a href="#" onClick={() => setSelectedCategory('government')}>Government</a>
+                </div>
+            </div>
+            <div className='news-container'>
+                {news.slice(indexOfFirstArticle, indexOfLastArticle).map((article, index) => (
                     <NewsArticle key={index} article={article} />
                 ))}
             </div>
-            <div className='column'>
-                <h2>Apple News</h2>
-                {appleNews.map((article, index) => (
-                    <NewsArticle key={index} article={article} />
-                ))}
-            </div>
-            <div className='column'>
-                <h2>TechCrunch News</h2>
-                {techCrunchNews.map((article, index) => (
-                    <NewsArticle key={index} article={article} />
-                ))}
+            <div className="pagination">
+                <button onClick={handlePrevPage} disabled={currentPage === 1}>Previous</button>
+                <button onClick={handleNextPage}>Next</button>
             </div>
         </div>
     );
