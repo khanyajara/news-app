@@ -51,14 +51,16 @@ const NewsApp = () => {
             <div className="dropdown">
                 <button className="dropbtn">Category</button>
                 <div className="dropdown-content">
+                    
                     <a href="#" onClick={() => setSelectedCategory('sports')}>Sports</a>
                     <a href="#" onClick={() => setSelectedCategory('technology')}>Tech</a>
                     <a href="#" onClick={() => setSelectedCategory('business')}>Business</a>
-                    <a href="#" onClick={() => setSelectedCategory('market')}>Market</a>
-                    <a href="#" onClick={() => setSelectedCategory('traffic')}>Traffic</a>
-                    <a href="#" onClick={() => setSelectedCategory('government')}>Government</a>
-                </div>
-            </div>
+                    <a href="#" onClick={() => setSelectedCategory('politics')}>politics</a>
+                    <a href="#" onClick={() => setSelectedCategory('entertainment')}>Entertainment</a>
+                    <a href="#" onClick={() => setSelectedCategory('health')}>health</a>
+                    <a href="#" onClick={() => setSelectedCategory('Science')}>Science</a>
+                    </div>
+            </div><h2>Trending news</h2>
             <div className='news-container'>
                 {news.slice(indexOfFirstArticle, indexOfLastArticle).map((article, index) => (
                     <NewsArticle key={index} article={article} />

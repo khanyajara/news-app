@@ -82,12 +82,13 @@ h2 {
 }
 
 .dropbtn {
-    background-color: #4CAF50;
+    background-color: #4cafaf;
     color: white;
     padding: 16px;
     font-size: 16px;
     border: none;
     cursor: pointer;
+    border-radius: 25px;
 }
 
 .dropdown-content {
@@ -115,7 +116,7 @@ h2 {
 }
 
 .dropdown:hover .dropbtn {
-    background-color: #3e8e41;
+    background-color: #3e8e81;
 }
 
 /* Pagination styling */
