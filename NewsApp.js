@@ -75,7 +75,7 @@ const NewsApp = () => {
                     <a href="#" onClick={() => setSelectedCategory('science')}>Science</a>
                 </div>
             </div>
-            <h2>Trending news</h2>
+            <h2>{selectedCategory}</h2>
             <div className='news-container'>
                 {news.slice(indexOfFirstArticle, indexOfLastArticle).map((article, index) => (
                     <NewsArticle key={index} article={article} />
