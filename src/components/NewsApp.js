@@ -2,14 +2,29 @@ import React, { useState, useEffect } from 'react';
 import './NewsApp.css';
 
 const NewsArticle = ({ article }) => {
+    const { title, url, urlToImage, description } = article;
+
+    // URLs for sharing
+    const emailLink = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`;
+    const whatsappLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(title + ' ' + url)}`;
+    const facebookLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    const instagramLink = `https://www.instagram.com/?url=${encodeURIComponent(url)}`; // Instagram does not support direct sharing of links
+
     return (
         <div className='news-article'>
-            {article.urlToImage && (
-                <img src={article.urlToImage} alt={article.title} className='news-image' />
+            {urlToImage && (
+                <img src={urlToImage} alt={title} className='news-image' />
             )}
-            <h3>{article.title}</h3>
-            <p>{article.description}</p>
-            <a href={article.url} target='_blank' rel='noopener noreferrer'>Read more</a>
+            <h3>{title}</h3>
+            <p>{description}</p>
+            <a href={url} target='_blank' rel='noopener noreferrer'>Read more</a>
+            <div className="share-links">
+                <p>Share:</p>
+                <a href={emailLink} target='_blank' rel='noopener noreferrer'>Email</a>
+                <a href={whatsappLink} target='_blank' rel='noopener noreferrer'>WhatsApp</a>
+                <a href={facebookLink} target='_blank' rel='noopener noreferrer'>Facebook</a>
+                <a href={instagramLink} target='_blank' rel='noopener noreferrer'>Instagram</a>
+            </div>
         </div>
     );
 };
@@ -51,16 +66,16 @@ const NewsApp = () => {
             <div className="dropdown">
                 <button className="dropbtn">Category</button>
                 <div className="dropdown-content">
-                    
                     <a href="#" onClick={() => setSelectedCategory('sports')}>Sports</a>
                     <a href="#" onClick={() => setSelectedCategory('technology')}>Tech</a>
                     <a href="#" onClick={() => setSelectedCategory('business')}>Business</a>
-                    <a href="#" onClick={() => setSelectedCategory('politics')}>politics</a>
+                    <a href="#" onClick={() => setSelectedCategory('politics')}>Politics</a>
                     <a href="#" onClick={() => setSelectedCategory('entertainment')}>Entertainment</a>
-                    <a href="#" onClick={() => setSelectedCategory('health')}>health</a>
-                    <a href="#" onClick={() => setSelectedCategory('Science')}>Science</a>
-                    </div>
-            </div><h2>Trending news</h2>
+                    <a href="#" onClick={() => setSelectedCategory('health')}>Health</a>
+                    <a href="#" onClick={() => setSelectedCategory('science')}>Science</a>
+                </div>
+            </div>
+            <h2>Trending news</h2>
             <div className='news-container'>
                 {news.slice(indexOfFirstArticle, indexOfLastArticle).map((article, index) => (
                     <NewsArticle key={index} article={article} />
